@@ -1,0 +1,106 @@
+
+@if (
+    selectedNomina!=null ||
+    selectedSituacion!=null ||
+    filtroMesConcesion!=null ||
+    filtroAnnoConcesion!=null ||
+    filtroMesSolicitud!=null ||
+    filtroAnnoSolicitud!=null
+    ) {
+        <section class="filtros-aplicados">
+            <header>Filtros aplicados</header>
+            <ul aria-label="Lista de filtros aplicados. Incluye botón para descartar">
+                <li *ngIf="selectedNomina" class="filtro-seleccionado">
+                    <span>{{ obtenerDescripcionNomina() }}</span>
+                    <button type="button" (click)="borrarFiltroNomina()">
+                        <i class="fas fa-times-circle"></i>
+                        <span class="sr-only">Eliminar</span>
+                    </button>            
+                </li>
+
+                <li *ngIf="selectedSituacion" class="filtro-seleccionado">
+                    <span>{{ obtenerDescripcionSituacion() }}</span>
+                    <button type="button" (click)="borrarFiltroSituacion()">
+                        <i class="fas fa-times-circle"></i>
+                        <span class="sr-only">Eliminar</span>
+                    </button>
+                </li>
+                <li *ngIf="filtroMesConcesion || filtroAnnoConcesion" class="filtro-seleccionado">
+                    <span>Concedido 
+                        @if(filtroMesConcesion&&!filtroAnnoConcesion) {
+                            en el mes {{ filtroMesConcesion }}
+                        }
+                        @if(filtroMesConcesion&&filtroAnnoConcesion) {
+                          el mes {{ filtroMesConcesion }} de {{ filtroAnnoConcesion }}
+                        } 
+                        
+                        @if(filtroAnnoConcesion&&!filtroMesConcesion){
+                            en el año {{ filtroAnnoConcesion }}
+                        }</span>
+                    <button type="button" (click)="borrarFiltroFechaConcesion()">
+                        <i class="fas fa-times-circle"></i>
+                        <span class="sr-only">Eliminar</span>
+                    </button>            
+                </li>
+                <li *ngIf="filtroMesSolicitud || filtroAnnoSolicitud" class="filtro-seleccionado">
+                    <span>Solicitado
+                        @if(filtroMesSolicitud&&!filtroAnnoSolicitud) {
+                            en el mes {{ filtroMesSolicitud }}
+                        }
+                        @if(filtroMesSolicitud&&filtroAnnoSolicitud) {
+                          el mes {{ filtroMesSolicitud }} de {{ filtroAnnoSolicitud }}
+                        } 
+                        @if(filtroAnnoSolicitud&&!filtroMesSolicitud){
+                            en el año {{ filtroAnnoSolicitud }}
+                        }</span>
+                    <button type="button" (click)="borrarFiltroFechaSolicitud()">
+                        <i class="fas fa-times-circle"></i>
+                        <span class="sr-only">Eliminar</span>
+                    </button>            
+                </li>
+            </ul>
+        </section>
+}
+
+
+<section class="filtros">
+    <header>Filtros para aplicar</header>
+    <section aria-label="Seleccione tipo de nómina" class="bloque-filtro">
+        <label for="filtroNomina">Nómina</label>
+        <select id="filtroNomina" [(ngModel)]="selectedNomina" (change)="seleccionarNomina(selectedNomina)">
+            <option selected>Seleccione el tipo de Nómina</option>
+            <option *ngFor="let nomina of nominas" [value]="nomina.CDCLASNM">{{ nomina.DSCLASNM }}</option>
+        </select>
+    </section>
+    <section aria-label="Seleccione estado del anticipo" class="bloque-filtro">
+        <label for="filtroSituacion">Estado</label>
+        <select id="filtroSituacion" [(ngModel)]="selectedSituacion" (change)="seleccionarSituacion(selectedSituacion)">
+            <option *ngFor="let situacion of situaciones" [value]="situacion.codSit">{{ situacion.desSit }}</option>
+        </select>        
+    </section>
+
+
+    <fieldset *ngIf="verFiltroFechaConcesion" class="bloque-filtro">
+        <legend>Fecha de concesión</legend>
+        <div>
+            <label for="filtroMesConcesion">Mes:</label>
+            <input type="text" list="mesC" id="filtroMesConcesion" [(ngModel)]="filtroMesConcesion" maxlength="2" (input)="seleccionarFechaConcesion(filtroMesConcesion, filtroAnnoConcesion)" />
+            <label for="filtroAnnoConcesion">Año:</label>
+            <input type="text" id="filtroAnnoConcesion" [(ngModel)]="filtroAnnoConcesion" maxlength="4" (input)="seleccionarFechaConcesion(filtroMesConcesion, filtroAnnoConcesion)" />        
+        </div>
+    </fieldset>
+    <fieldset *ngIf="verFiltroFechaSolicitud"  class="bloque-filtro">
+        <legend>Fecha de Solicitud</legend>
+        <div>
+            <label for="filtroMesSolicitud">Mes:</label>
+            <input type="text" id="filtroMesSolicitud" [(ngModel)]="filtroMesSolicitud" maxlength="2" (input)="seleccionarFechaSolicitud(filtroMesSolicitud, filtroAnnoSolicitud)" />
+        
+            <label for="filtroAnnoSolicitud">Año:</label>
+            <input type="text" id="filtroAnnoSolicitud" [(ngModel)]="filtroAnnoSolicitud" maxlength="4" (input)="seleccionarFechaSolicitud(filtroMesSolicitud, filtroAnnoSolicitud)" />
+        </div>
+    </fieldset>
+</section>
+
+
+
+  

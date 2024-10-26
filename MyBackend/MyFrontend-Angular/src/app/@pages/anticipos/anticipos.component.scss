@@ -1,0 +1,238 @@
+:host {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.nav-estados {
+    background-color: var(--gris-c);
+    display: flex;
+    align-items: center;
+    flex: none;
+
+    ul {
+        padding-left: 120px;
+        margin: 0;
+
+        li {
+            list-style: none;
+            display: inline-block;
+
+            button {
+                border: none;
+                border-radius: 5px;
+                background-color: var(--gris-e);
+                padding: 6px 20px;
+                margin: 0.45rem 0.35rem;
+                font-weight: 500;
+                font-size: .9rem;
+                color: #000;
+            }
+        }
+    }
+
+    fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+
+        &>div {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-left: 5vw;
+
+            label {
+                flex: none;
+
+            }
+            input {
+                flex: 1;
+                
+            }
+
+        }
+    }
+}
+
+.contenedor-medio {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+
+    &>* {
+        box-sizing: border-box;
+    }
+
+    .col-filtros {
+        flex:1 0 25%;
+        max-width: 30vw;
+        background-color: var(--gris-d);
+        padding: .5rem;
+    }
+    .col-resultados {
+        flex:1 0 75%;
+        padding: 15px;
+        header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            strong {
+                font-weight: 900;
+                font-size: 1.5rem;
+                color: var(--principal);
+            }
+            button {
+                display: inline-flex;
+                align-items: center;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+                background-color: var(--principal);
+                color:#fff ;
+                line-height: 1;
+                margin: 0 3px;
+                padding: 5px 10px;
+
+                &:hover {
+                    background-color: var(--principal-claro);
+                }
+
+                .fas {
+                    font-weight: 900;
+                }
+        
+        
+
+            }
+        }
+
+        .lista-resultados {
+            padding: 0;
+            margin: 0;
+            max-height: 65vh;
+            overflow-y: auto;
+            li {
+                list-style: none;
+                margin: 0;
+                padding: .40rem 0;
+                font-size: .9rem;
+                .datos-resultado {
+                    display: flex;
+                    align-items: stretch;
+                    background-color: var(--gris-a);
+                    border: 1px solid var(--gris-b);
+                    border-radius: 8px;
+                    &>div {
+                        --tranparencia: .2;
+                        background-color: rgba(255,255,255,var(--tranparencia));
+                        padding: .5rem;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .nombre-id {
+                        border-top-left-radius: inherit;
+                        border-bottom-left-radius: inherit;
+                        flex: 4;
+                        justify-content: space-around;
+                        --tranparencia: .9;
+                    }
+                    .solicitado,
+                    .certificado,
+                    .concedido {
+                        flex:1;
+                        text-align: center;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+
+                        .ic-title {
+                            display: flex;
+                            align-items: center;
+                            line-height: 1;
+                            &::before {
+                                flex: none;
+                                display: inline-block;
+                                width: 24px;
+                                margin: 0 1px;
+                            }
+                        }                       
+                    }
+                    .solicitado {
+                        --tranparencia: .65;
+                        border-left: inherit;
+                        border-right: inherit;
+                        .ic-title::before {
+                            content: url(./../../../assets/images/icono-solicitado.png);
+                        }
+                    }
+                    .certificado {
+                        --tranparencia: .5;
+                        .ic-title::before {
+                            content: url(./../../../assets/images/icono-certificado.png);
+                        }
+                    }
+                    .concedido {
+                        --tranparencia: .35;
+                        border-left: inherit;
+                        border-right: inherit;
+                        .ic-title::before {
+                            content: url(./../../../assets/images/icono-concedido.png);
+                        }
+                    }
+
+
+                    .amortizado-detalle-acciones {
+                        flex:5;
+                        display: flex;
+                        flex-direction: row;
+                        --tranparencia: 0;
+                        &>* {
+                            flex: none;
+                            //padding: 0 .25rem;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-around;
+                            text-align: center;
+
+                        }
+                        .estado {
+                            [class^="fa"] {
+                                font-size: 1.2rem;
+                                color: #2176b9;
+                            }
+                        }
+                        .amortizado {
+                            flex: 1;
+                            padding-left: 0.55rem;
+                          
+                        }
+
+                        .acciones {
+                            flex-direction: row;
+                            flex: none;
+                            display: inline-flex;
+                            align-items: center;
+                            --size:40px;
+                            button {
+                                margin: 0 5px;
+                                font-size: 1.5rem;
+                                width: var(--size) ;
+                                height: var(--size);
+                                color: var(--principal);
+                                border: none;
+                                border-radius: 8px;
+                                background-color: rgba(255,255,255,.8);
+                            }
+                        }
+
+                         
+                    }
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,97 @@
+.filtros-aplicados {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    /* border-bottom: 3px solid var(--gris-c); */
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+
+    header {
+        flex: none;
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    ul {
+        margin:0;
+        flex:1;
+        padding: 0;
+
+        .filtro-seleccionado {
+            list-style: none;
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--gris-e);
+            border-radius: 10px;
+            padding: 3px 10px;
+            font-size: .8rem; 
+            box-shadow: 2px 2px 4px var(--gris-4);    
+            margin: 5px;
+
+            button {
+                display: inline-flex;
+                align-items: center;
+                border: none;
+                background-color: transparent;
+                line-height: 1;
+                color: var(--gris-4); ;
+
+                .icono-eliminar {
+                    --tamano: 15px ;
+                    line-height: 1;
+                }
+            }
+            
+
+        }
+    }
+}
+
+.filtros {
+    header {
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+    section {
+        display: flex;
+        align-items: center;
+        label {
+            flex:none;
+        }
+        input, select {
+            flex:1;
+            width: 100%;
+        }  
+    }
+
+    fieldset {
+        legend {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            border-bottom: 1px solid #aaa;
+        }
+    }
+    .bloque-filtro {
+        margin: 1rem .35rem;
+        border: none;
+        padding: 0;
+
+        &>div {
+            display: flex;
+            align-items: center;
+            label {
+                flex:none;
+            }
+            input, select {
+                flex:1;
+                width: 100%;
+            } 
+        }
+    }
+}

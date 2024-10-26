@@ -1,0 +1,144 @@
+trigger:
+- main
+- develop
+
+pool:
+  name: 'AGENTES-SGTIC'
+  demands:
+  - agent.name -equals ALCDOBLD2-1
+
+variables:
+   - name: _nombre_artefacto
+     value: "binarios"
+
+jobs:
+  - job: BuildAndTest
+    displayName: 'Construir Solución'
+    steps:
+      ## Paso 1: Descargar el repositorio
+      # clean indica que no borre los ficheros generados del agente
+      - checkout: self
+        clean: false
+
+      ## Paso 2: Nombrar el artefacto
+      # - powershell: |
+      #     $branchName = "$(Build.SourceBranchName)"
+      #     Write-Host "Rama origen: $branchName, nombre del artefacto: ${{ variables._nombre_artefacto }}"
+      #     if ($branchName -eq "develop") {
+      #       Write-Host "Creating binarios-dev artifact..."
+      #       $newArtifactName = "binarios-dev"
+      #     } elseif ($branchName -eq "main" -or $branchName -like "*release*") {
+      #       Write-Host "Creating entregable artifact..."
+      #       $newArtifactName = "entregable"
+      #     } else {
+      #       Write-Host "Creating artifact de rama tarea..."
+      #       $newArtifactName = "binarios $branchName"
+      #     }
+      #     Write-Host "##vso[task.setvariable variable=_nombre_artefacto]$newArtifactName"
+      #     Write-Host "nombre del artefacto: $newArtifactName"
+      #   displayName: 'Nombrar el artefacto' 
+
+      ## Paso 1: Eliminar carpeta publish de MyBackend y wwwroot de MyFrontend-Angular
+      - powershell: |    
+          if (Test-Path -Path "$(Build.Repository.LocalPath)\MyBackend\publish") {
+            Write-Host "Eliminando la carpeta  $(Build.Repository.LocalPath)\MyBackend\publish"       
+            Remove-Item -Path "$(Build.Repository.LocalPath)\MyBackend\publish" -Recurse -Force
+          } 
+          if (Test-Path -Path "$(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular\wwwroot") {
+            Write-Host "Eliminando la carpeta  $(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular\wwwroot"       
+            Remove-Item -Path "$(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular\wwwroot" -Recurse -Force
+          }                      
+        displayName: 'Eliminar carpetas publish, wwwroot'
+        condition: succeeded()
+
+      # ## Paso 4: NET
+      # - task: DotNetCoreCLI@2
+      #   inputs:
+      #     command: 'build'
+      #     projects: '$(Build.Repository.LocalPath)\MyBackend'
+      #     arguments: '--configuration Release --output  $(Build.ArtifactStagingDirectory)'
+      #   displayName: 'Compilar NET'
+      #   condition: succeeded()
+      # ## Paso 5: Compilar Angular 
+      # - powershell: |
+      #     Write-Host "-- Instalando Node 20.12.0"
+      #     nvm install 20.12.0     
+      #     Write-Host "-- cambiando a la versión de  Node 20.12.0"
+      #     nvm use 20.12.0
+      #     Write-Host "--NPM INSTALL  Instalando Dependencias version node: 20.12.0"
+      #     cd $(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular
+      #     npm install 
+      #     Write-Host "-- Compilando angular opción: buildpro"       
+      #     npm run buildpro        
+      #   displayName: 'Compilar Angular'
+      #   condition: succeeded()
+      # ## Paso 6: Copiar binarios angular y ficherosconfiguracion al artefacto 
+      # - task: CopyFiles@2
+      #   displayName: 'binarios angular al artefacto'
+      #   inputs:
+      #     SourceFolder: '$(Build.Repository.LocalPath)/MyBackend/MyFrontend-Angular/wwwroot'
+      #     Contents: '**'
+      #     TargetFolder: '$(Build.ArtifactStagingDirectory)/wwwroot'
+      #     CleanTargetFolder: true
+      #   condition: succeeded()
+      # - task: CopyFiles@2
+      #   displayName: 'Carpeta FicherosConfiguracion al artefacto'
+      #   inputs:
+      #     SourceFolder: '$(Build.Repository.LocalPath)/FicherosConfiguracion'
+      #     Contents: '**'
+      #     TargetFolder: '$(Build.ArtifactStagingDirectory)/FicherosConfiguracion'
+      #     CleanTargetFolder: true
+      #   condition: succeeded()
+
+      ## Paso 2: Compilación y publicación NET y Angular
+      #- task: DotNetCoreCLI@2
+      #  inputs:
+      #    command: 'build'
+      #    projects: '$(Build.Repository.LocalPath)\MyBackend'
+      #    arguments: '--configuration Release --output  $(Build.ArtifactStagingDirectory)'
+      #  displayName: 'Compilar NET'
+      #  condition: succeeded()
+      - powershell: |
+          Write-Host "-- Compilando .NET Backend"
+          dotnet build "$(Build.Repository.LocalPath)\MyBackend" --configuration Release --output "$(Build.ArtifactStagingDirectory)\app"
+          
+          Write-Host "-- Instalando Node 20.12.0"
+          nvm install 20.12.0     
+          Write-Host "-- cambiando a la versión de Node 20.12.0"
+          nvm use 20.12.0
+          Write-Host "-- NPM INSTALL Instalando Dependencias version node: 20.12.0"
+          cd $(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular
+          npm install 
+          Write-Host "-- Compilando angular opción: buildpro"       
+          npm run buildpro        
+
+          Write-Host "-- Copiando compilados angular al artefacto"
+          if (-not (Test-Path -Path $(Build.ArtifactStagingDirectory)\app\wwwroot)) {
+            # Crear la carpeta si no existe
+            New-Item -ItemType Directory -Path $(Build.ArtifactStagingDirectory)\app\wwwroot
+          }
+          Copy-Item -Path $(Build.Repository.LocalPath)\MyBackend\MyFrontend-Angular\wwwroot\* -Destination $(Build.ArtifactStagingDirectory)\app\wwwroot -Recurse -Force
+        displayName: 'Compilar y publicar NET y Angular'
+        condition: succeeded()
+
+      ## Paso 3: Moviendo ficheros de configuración
+      - powershell: |
+          Write-Host "-- Copiar carpeta de ficheros de configuración al artefacto"
+          if (-not (Test-Path -Path $(Build.ArtifactStagingDirectory)\FicherosConfiguracion)) {
+            # Crear la carpeta si no existe
+              New-Item -ItemType Directory -Path $(Build.ArtifactStagingDirectory)\FicherosConfiguracion
+          }
+
+          Write-Host "-- Copiar carpeta de ficheros de configuración al artefacto"
+          Copy-Item -Path $(Build.Repository.LocalPath)\FicherosConfiguracion\* -Destination $(Build.ArtifactStagingDirectory)\FicherosConfiguracion -Recurse -Force
+          Copy-Item -Path $(Build.Repository.LocalPath)\FicherosConfiguracion\dev\web.config -Destination $(Build.ArtifactStagingDirectory)\app\ -Force       
+          Copy-Item -Path $(Build.Repository.LocalPath)\FicherosConfiguracion\dev\appsettings.json -Destination $(Build.ArtifactStagingDirectory)\app\ -Force 
+          Copy-Item -Path $(Build.Repository.LocalPath)\FicherosConfiguracion\dev\config.json -Destination $(Build.ArtifactStagingDirectory)\app\wwwroot\assets -Force           
+        displayName: 'copiar carpeta Ficheros de configuración y situar los ficheros de Desarrollo'
+        condition: succeeded()
+
+      ## Paso 4: Publicar el artefacto
+      - publish: $(Build.ArtifactStagingDirectory)      
+        artifact: $(_nombre_artefacto)
+        displayName: 'Publicar Artefacto'
+        condition: succeeded()

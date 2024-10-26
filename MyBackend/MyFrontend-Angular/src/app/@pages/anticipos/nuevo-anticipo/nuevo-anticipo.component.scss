@@ -1,0 +1,12 @@
+.modal-contenedor>div {
+    display: flex;
+    align-items: stretch;
+    margin: .5rem 0;
+    label {
+        flex: none;
+        align-self: center;
+    }
+    input {
+        flex: 1;
+    }
+}

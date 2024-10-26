@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "name": "1- Depurar .NET Core",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Compilar NET8",
+            "program": "${workspaceFolder}/MyBackend/bin/Debug/net8.0/ModAuxNomina.dll",
+            "cwd": "${workspaceFolder}/MyBackend", // Establecer el directorio de trabajo aquí
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"              
+            }
+          },   
+          {
+            "name": "Ejecutar Node.js",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "npm start",         
+            "cwd": "${workspaceFolder}\\Mybackend\\MyFrontend-Angular"
+          }, 
+          {
+            "name": "Launch Chrome for Node",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}\\Mybackend\\MyFrontend-Angular",
+          },
+    ],
+    "compounds": [
+      
+      {
+        "name": "2-Debug Angular 4200 Node.js y Chrome",
+        "configurations": [
+          "1- Depurar .NET Core",
+          "Ejecutar Node.js",
+          "Launch Chrome for Node"
+        ]
+      },
+    ]
+}

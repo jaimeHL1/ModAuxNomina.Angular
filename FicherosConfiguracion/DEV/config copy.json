@@ -1,0 +1,16 @@
+{
+    "appTitulo": "¡Bienvienido a Módulos Auxiliares Habilitación!",
+    "rutaApi": "https://devapp.serviciosinternos.hacienda.gob.es/ModauxNomina.Angular/api", 
+    "rutaConsultaNomina":"https://devapp.serviciosinternos.hacienda.gob.es/ConsultaNomina.Angular",
+    "rutaGestionProductividad":"https://devapp.serviciosinternos.hacienda.gob.es/ModAuxNedaes.Angular",
+    "entornoGenerico": "IIS-LOCAL",
+    "usuarioConectado": {
+      "nombre": "Mr UsuarioJSON",
+      "Apellidos": "Apellido1 Apellido2",
+      "NIF": "17192121N",
+      "DNI":"17192121",
+      "Login": "minhac\\JMILLAN",
+      "PerfilAutoriza": "AdministradorAplicacion"
+      }
+  }
+  

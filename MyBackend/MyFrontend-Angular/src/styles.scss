@@ -1,0 +1,263 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: "HelveticaNeueLT";
+    src: url("assets/fuentes/HelveticaNeueLTCom-ThEx.ttf") format("truetype");
+}
+
+
+
+:root {
+    --yema: #fbc02d;
+    --yema-oscuro: #e69a00;
+    //--gris-claro:#EEEEEE;
+    --gris-a: #aaaaaa;
+    --gris-b: #bbbbbb;
+    --gris-c: #ccc;
+    --gris-d: #dddddd;
+    --gris-e: #eeeeee;
+
+    --gris-4: #444444;
+
+    --principal: #561b39;
+    --principal2: #72244c;
+    --principal-claro: #b891a5;
+    --principal-muy-claro: rgb(218, 183, 201);
+    --texto: #000000;
+}
+
+
+
+body {
+    margin: 0;
+    font-family:
+        Segoe UI,
+        Verdana,
+        Geneva,
+        Arial,
+        helvetica,
+        sans-serif,
+        "Open Sans Condensed",
+        sans-serif;
+    color: black;
+}
+
+.sr-only {
+    position: absolute;
+    top: -2000px;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid var(--gris-c);
+    border-radius: 5px;
+    margin: 0 0.5vw;
+
+    &.buscar {
+        padding-right: 30px;
+        position: relative;
+        background-image: url(assets/images/lupa-input.png);
+        background-repeat: no-repeat;
+        background-position: right;
+    }
+}
+
+label.obligatorio::after {
+    content: '*';
+    color: red;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+button {
+    cursor: pointer;
+    font-family:
+        Segoe UI,
+        Verdana,
+        Geneva,
+        Arial,
+        helvetica,
+        sans-serif,
+        "Open Sans Condensed",
+        sans-serif;
+    border-radius: 4px;
+    background-color: var(--principal);
+    color: #fff;
+    border: none;
+
+    &:hover {
+        background-color: var(--principal-claro);
+    }
+
+    &:disabled {
+        --transp: .8;
+        opacity: var(--transp);
+        cursor: default;
+    }
+
+    &.xls {
+        background-color: #0a7232;
+
+        &::before {
+            content: url(assets/images/icono-XLS.png);
+        }
+
+        &:hover:enabled {
+            background-color: #0a5f2a;    
+        }
+       
+    }
+    &.pdf {
+        background-color: #920606;
+        &::before {
+            content: url(assets/images/icono-PDF.png);
+        }
+    }
+    
+}
+
+
+progress {
+    block-size: 1.5rem;
+    accent-color: green;
+    width: 90%;
+    margin: 0 auto;
+}
+
+details {
+    border: 1px solid var(--gris-a);
+    border-radius: 5px;
+    background-color: var(--gris-c);
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    summary {
+        font-weight: 500;
+    }
+    &[open] {
+        background-color: #fff;
+        & > summary {
+            border-bottom: 1px solid var(--gris-4);
+            margin-bottom: 0.25rem;
+        }
+    }
+    .contenedor {
+        padding: 0.5rem;
+    }
+}
+
+.dsp-flex {
+    display: flex;
+    &.vertical {
+        flex-direction: column;
+    }
+}
+
+
+
+//#region ===== Scrollbar CSS ===== 
+
+body,
+main,
+ul,
+tbody {
+    &::-webkit-scrollbar {
+        width: 16px;
+        -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar-track {
+        background: #ffffff;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--principal);
+        border-radius: 7px;
+        border: 4px solid #ffffff;
+    }
+}
+
+//#endregion
+
+
+
+//#region ===== MODAL ===== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+.modal-contenedor {
+    --ancho-max: 80vw;
+    --alto-max: 60vh;
+    max-width: var(--ancho);
+    max-height: var(--alto-max);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: left;
+    border: rgb(227, 227, 227) 1px solid;
+    background-color: white;
+    border-radius: 0.3rem;
+    overflow: auto;
+    z-index: 2;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+
+    header {
+        font-size: 1.2rem;
+        border-bottom: 3px solid var(--principal-claro);
+        display: flex;
+        & > div {
+            flex: 1;
+            &:last-child {
+                flex: none;
+
+                button {
+                    background-color: transparent;
+                    border: none;
+                    font-size: 1.5rem;
+                    color: var(--gris-4);
+                }
+            }
+        }
+    }
+
+    .acciones-modal {
+        align-self: self-end;
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: var(--principal);
+            color: #fff;
+            line-height: 1;
+            margin: 0 3px;
+            padding: 5px 10px;
+
+            &:hover {
+                background-color: var(--principal-claro);
+            }
+
+            .fas,
+            .fa {
+                margin-right: 0.25rem;
+            }
+        }
+    }
+}
+
+//#endregion

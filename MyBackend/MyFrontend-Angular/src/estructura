@@ -1,0 +1,91 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es 0E31-B1E3
+F:.
+|   estructura
+|   index.html
+|   main.ts
+|   styles.scss
+|   
++---app
+|   |   app-routing.module.ts
+|   |   app.component.html
+|   |   app.component.scss
+|   |   app.component.ts
+|   |   app.module.ts
+|   |   config.service.ts
+|   |   estructura
+|   |   
+|   +---@pages
+|   |   |   inicio.service.ts
+|   |   |   shared.service.ts
+|   |   |   
+|   |   +---administracion
+|   |   |       administracion.component.html
+|   |   |       administracion.component.scss
+|   |   |       administracion.component.ts
+|   |   |       
+|   |   +---anticipos
+|   |   |   |   anticipos.component.html
+|   |   |   |   anticipos.component.scss
+|   |   |   |   anticipos.component.ts
+|   |   |   |   anticipos.service.ts
+|   |   |   |   
+|   |   |   +---detalle
+|   |   |   |   +---detalle-anticipo
+|   |   |   |   |       detalle-anticipo.component.html
+|   |   |   |   |       detalle-anticipo.component.scss
+|   |   |   |   |       detalle-anticipo.component.ts
+|   |   |   |   |       
+|   |   |   |   +---detalle-calculo
+|   |   |   |   |       detalle-calculo.component.html
+|   |   |   |   |       detalle-calculo.component.scss
+|   |   |   |   |       detalle-calculo.component.ts
+|   |   |   |   |       
+|   |   |   |   \---historial-anticipo
+|   |   |   |           historial-anticipo.component.html
+|   |   |   |           historial-anticipo.component.scss
+|   |   |   |           historial-anticipo.component.ts
+|   |   |   |           
+|   |   |   \---filtro
+|   |   |       \---filtro-anticipo
+|   |   |               filtro-anticipo.component.html
+|   |   |               filtro-anticipo.component.scss
+|   |   |               filtro-anticipo.component.ts
+|   |   |               
+|   |   +---bajas
+|   |   |       bajas.component.html
+|   |   |       bajas.component.scss
+|   |   |       bajas.component.ts
+|   |   |       
+|   |   \---loader
+|   |           loader.component.html
+|   |           loader.component.scss
+|   |           loader.component.ts
+|   |           loader.interceptor.ts
+|   |           loader.service.ts
+|   |           
+|   \---models
+|       |   config-json.model.ts
+|       |   
+|       \---anticipos
+|               amortizacion-detalle.ts
+|               anticipo-completo.model.ts
+|               anticipo-historial.ts
+|               empleado.model.ts
+|               
+\---assets
+    |   config.json
+    |   
+    +---fuentes
+    |       HelveticaNeueLTCom-ThEx.ttf
+    |       
+    \---images
+            escudo-espana.jpg
+            icono-PDF.png
+            icono-XML.png
+            logo-MINHAC.jpg
+            lupa-input.png
+            lupa.svg
+            mesSeleccionado.png
+            person.png
+            

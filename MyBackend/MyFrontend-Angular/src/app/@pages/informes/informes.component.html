@@ -1,0 +1,54 @@
+<div class="cabecera">
+
+</div>
+
+<fieldset>
+    <legend>Generador de informes</legend>
+    <div>(<span style="color: red;">*</span>) Campos obligatorios</div>
+    <div class="contenedor-informes">
+        <section [formGroup]="form" aria-label="Seleccione categoría y tipo de informe">
+            <div *ngIf="categorias" class="fila-categ">
+                <label for="categorias">Categorías</label>
+                <select formControlName="Categorias" id="categorias"
+                    (change)="SelectCategoria()">
+                    <option value="0" selected>Seleccione una categoría</option>
+                    @for (item of categorias; track item) {
+                    <option [value]="item.idCategoria">{{ item.descripcion
+                        }}</option>
+                    }
+                </select>
+            </div>
+    
+            <div *ngIf="informes" class="fila-informes">
+                <label for="Informes">Informes</label>
+                <select formControlName="Informes" id="Informes"
+                    (change)="SelectInforme()">
+                    <option value="0" selected>Seleccione el tipo de informe</option>
+                    @for (item of informes; track item) {
+                    <option [value]="item.idInforme">{{ item.descripcion }}</option>
+                    }
+                </select>
+            </div>
+        </section>
+
+        <section [formGroup]="formParametros" *ngIf="parametrosInforme" aria-label="Seleccione las fechas requeridas" >
+            <div class="fila-fechas">
+            @for (item of parametrosInforme; track $index) {
+            <div>
+                <label [attr.for]="'campoFecha'+item.idParametro" [class]="!esValido(item) ? 'obligatorio' : ''">
+                    {{ item.texto }} 
+                </label>
+                <input [formControlName]="item.idParametro" [id]="'campoFecha'+item.idParametro" type="date">
+            </div>
+                <!-- @if (!esValido(item)) {
+                    <div class="errorMessage">{{ item.texto}} es obligatorio</div>
+                } -->
+            }
+            </div>
+            <div class="acciones">
+                <button type="button" class="xls" (click)="GenerarInforme($event)"
+                    [disabled]="!formParametros.valid">Generar Informe en Excell</button>            
+            </div>  
+        </section>  
+    </div>
+</fieldset>

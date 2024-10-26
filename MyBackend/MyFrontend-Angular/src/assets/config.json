@@ -1,0 +1,15 @@
+{
+    "appTitulo": "Nómina",
+    "rutaApi": "https://localhost:5001/api", 
+    "rutaConsultaNomina":"https://localhost/ConsultaNomina.Angular",
+    "rutaGestionProductividad":"https://localhost/ModAuxNedaes.Angular",
+    "entornoGenerico": "DESARROLLO",
+    "usuarioConectado": {
+      "nombre": "Mr UsuarioJSON",
+      "Apellidos": "Apellido1 Apellido2",
+      "NIF": "32879222D",
+      "DNI": "17192121",
+      "Login": "minhac\\ccastrillo",
+      "PerfilAutoriza": "AdministradorAplicacion"
+      }
+  }

@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [        
+      {
+        "label": "Publicar solución Para IIS Local",
+        "command": "powershell",
+        "type": "shell",
+        "args": [
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}/MyBackend/ps1/compilar-iislocal.ps1"
+        ],      
+        "problemMatcher": []
+      }, 
+        {
+            "label": "Compilar NET8",
+            "command": "powershell",
+            "type": "shell",
+            "args": [
+              "-ExecutionPolicy",
+              "Bypass",
+              "-File",
+              "${workspaceFolder}/MyBackend/ps1/compilarNET8.ps1"
+            ],
+            "isBackground": false,
+            "problemMatcher": [
+              {
+                "owner": "csharp",
+                "pattern": [
+                  {
+                    "regexp": ".",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                  }
+                ],
+                "background": {
+                  "activeOnStart": true,
+                  "beginsPattern": ".",
+                  "endsPattern": "."
+                }
+              }
+            ]
+          },
+          {
+            "label": "Levantar Kestrel",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+              "${workspaceFolder}\\MyBackend\\bin\\Debug\\net8.0\\ModAuxNomina.dll"
+            ],
+            "isBackground": true,
+            "problemMatcher": [
+              {
+                "owner": "csharp",
+                "pattern": [
+                  {
+                    "regexp": ".",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                  }
+                ],
+                "background": {
+                  "activeOnStart": true,
+                  "beginsPattern": ".",
+                  "endsPattern": "."
+                }
+              }
+            ]
+          },
+    ]
+}

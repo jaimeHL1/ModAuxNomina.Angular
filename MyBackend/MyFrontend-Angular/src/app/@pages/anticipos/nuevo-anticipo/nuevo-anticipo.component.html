@@ -1,0 +1,43 @@
+<ng-container *ngIf="modalActiva">
+  <section class="modal-contenedor" role="dialog">
+    <header>
+      <div>Nuevo Anticipo</div>
+      <div>
+        <button type="button" title="Cerrar modal" (click)="cerrarModal()">
+          <i class="fas fa-times-circle" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- DNI -->
+    <div>
+      <label for="anticipoDni">DNI:</label>
+      <input type="text" id="anticipoDni" [(ngModel)]="anticipoDni" maxlength="8" (blur)="onDniBlur()" pattern="[0-9]*">
+    </div>
+
+    <!-- Pagas -->
+    <div>
+      <label for="anticipoPagas">Número de Pagas:</label>
+      <input type="text" id="anticipoPagas" [(ngModel)]="anticipoPagas" maxlength="1" pattern="[0-9]*">
+    </div>
+
+    <!-- Mostrar datos del empleado -->
+    <div *ngIf="empleado">
+      <p><strong>Nombre completo:</strong> {{ empleado.nombreCompleto }}</p>
+      <p><strong>DNI:</strong> {{ empleado.cddni }}</p>
+    </div>
+
+    <div class="acciones-modal">
+      <button id="btnGrabarAnticipo" (click)="grabarAnticipo()">
+        <i class="fas fa-save"></i>
+        <span>Grabar anticipo</span>
+      </button>
+      <button id="btnGrabarSalirAnticipo" (click)="grabarYSalirAnticipo()">
+        <i class="fas fa-share-square"></i>
+        <span>Grabar y salir</span>
+      </button>
+    </div>
+  </section>
+
+  <div class="modal-overlay"></div>
+</ng-container>

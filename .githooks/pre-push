@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Obtiene el nombre de la rama actual
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+echo "Inicio" 
+# Verificar si hay archivos no agregados
+# if [ -n "$unstaged_files" ]; then
+if [ -n "$(git status --porcelain)" ]; then
+    echo "Error: Hay cambios sin confirmar en la rama '$current_branch':"
+    git status -s
+    exit 1
+else
+	# Verifica si la rama actual es 'develop' o 'main'
+	if [ "$current_branch" = "develop" ] || [ "$current_branch" = "main" ]; then
+		# Si la rama no es 'develop' o 'main', no se ejecutan acciones y se muestra un mensaje
+		echo "No se permite hacer push en esta rama en develop o main."
+		exit 1 # Se aborta el push
+	else
+		# Solo ejecutamos las acciones si existe develop (estamos en el caso de que el repo sea nuevo y lo estemos creando)
+		if git ls-remote --exit-code origin "develop" &> /dev/null; then	
+			echo "Ejecutando acciones antes de hacer push en la rama."	
+			git switch develop
+			echo "Cambiamos a rama develop"
+			git pull origin develop
+			echo "Mergeamos rama develop con el remoto"	
+			git switch $current_branch
+			echo "Cambiamos a rama actual"
+			if git ls-remote --exit-code origin "$current_branch" &> /dev/null; then
+				echo "La rama remota '$current_branch' existe."
+				git pull origin $current_branch
+				echo "Mergeamos la rama remota con la actual"		
+			fi	
+			echo "Mergeamos la rama actual con el remoto por si existe"
+			#si el nombre de la rama commienza por pbi
+			if [[ "$current_branch" == pbi* ]]; then
+				git rebase develop
+				echo "Mergeamos con rebase la rama actual"		
+			fi	
+			exit 0 # Si todo está bien, se permite el push
+		fi
+	fi
+fi
+

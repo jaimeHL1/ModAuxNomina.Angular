@@ -1,0 +1,131 @@
+
+<ng-container *ngIf="verDetalleAnticipo">
+  <section class="modal-contenedor">
+    <header>
+      @if (anticipo) {
+        <div>Detalles de Anticipo ID : <strong>{{ anticipo.idAnticipo }}</strong></div>
+      } @else {
+        <div>No hay datos</div>  
+      }
+      <div>
+        <button type="button" title="Cerrar modal" (click)="cerrarModal()">
+          <i class="fas fa-times-circle" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <ng-container *ngIf="anticipo">
+      <details>
+        <summary>
+          Datos del Trabajador
+        </summary>
+        <div class="dsp-flex contenedor">Nómina actual: <strong>{{ anticipo.fechaNominaActual }} - {{ anticipo.descripcionClaseNomina }}</strong></div>
+        <div class="dsp-flex contenedor">
+          <div>
+            <span><strong>{{ anticipo.dni }}</strong></span> | 
+            <span><strong>{{ anticipo.apellidosNombre }}</strong></span>
+          </div>
+          <div>
+            <span>Grupo: <strong>{{ anticipo.grupo }}</strong></span> | 
+            <span>Nivel: <strong>{{ anticipo.nivel }}</strong></span>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          Datos del Anticipo
+        </summary>
+        <div class="dsp-flex contenedor">
+          <div>
+            <div>Fórmula: <strong>{{ spanFormula }}</strong></div>
+          </div>
+          <div class="dsp-flex">
+            <div>Concedido: <strong>{{ anticipo.importeTotal }} €</strong></div>
+            <div>Amortizado: <strong>{{ anticipo.importeAmortizado }} €</strong></div>
+            <div>Pendiente: <strong>{{ (anticipo.importeTotal || 0) - (anticipo.importeAmortizado || 0) }} €</strong></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          Calendario tramitación
+        </summary>
+        <div class="dsp-flex contenedor">
+          <div>Solicitado: {{ anticipo.fechaAlta }}</div>
+          <div>Certificado: {{ anticipo.fechaCertificacion }}</div>
+          <div>Concedido: {{ anticipo.fechaConcesion }}</div>          
+        </div>
+      </details>
+
+      <details>
+        <summary>Amortización</summary>
+        <div class="dsp-flex contenedor">
+          <div *ngIf="anticipo && anticipo.importeTotal && anticipo.numMesesDevolucion">
+            Cuota Teórica: <strong>{{ (anticipo.importeTotal / anticipo.numMesesDevolucion).toFixed(0) }}</strong>
+          </div>
+          <div>
+            Número de cuotas: <strong>{{ anticipo.numMesesDevolucion }}</strong>
+          </div>
+        </div>
+      </details>
+
+
+    
+      <table>
+        <thead>
+          <tr>
+            <th>Año</th>
+            <th>Enero</th>
+            <th>Febrero</th>
+            <th>Marzo</th>
+            <th>Abril</th>
+            <th>Mayo</th>
+            <th>Junio</th>
+            <th>Julio</th>
+            <th>Agosto</th>
+            <th>Septiembre</th>
+            <th>Octubre</th>
+            <th>Noviembre</th>
+            <th>Diciembre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let amortizacion of amortizaciones">
+            <td>{{ amortizacion.annoAmortizacion }}</td>
+            <td>{{ amortizacion.real }}</td>
+            <td>{{ amortizacion.importeEnero }}</td>
+            <td>{{ amortizacion.importeFebrero }}</td>
+            <td>{{ amortizacion.importeMarzo }}</td>
+            <td>{{ amortizacion.importeAbril }}</td>
+            <td>{{ amortizacion.importeMayo }}</td>
+            <td>{{ amortizacion.importeJunio }}</td>
+            <td>{{ amortizacion.importeJulio }}</td>
+            <td>{{ amortizacion.importeAgosto }}</td>
+            <td>{{ amortizacion.importeSeptiembre }}</td>
+            <td>{{ amortizacion.importeOctubre }}</td>
+            <td>{{ amortizacion.importeNoviembre }}</td>
+            <td>{{ amortizacion.importeDiciembre }}</td>
+            <td>{{ amortizacion.observacionesDiciembre }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container> 
+
+    <ng-template #noData>
+      <p>No se ha seleccionado ningún anticipo.</p>
+    </ng-template>
+
+
+    <button (click)="mostrarDetalleCalculo()">Descripción cálculo</button>
+    <button (click)="mostrarHistoricoAnticipo()">Historial del anticipo</button>
+    <hr>
+    <app-detalle-calculo *ngIf="verDetalleCalculo" [anticipo]="anticipo"></app-detalle-calculo>
+    <app-historial-anticipo *ngIf="verHistorialAnticipo" [anticipo]="anticipo"  ></app-historial-anticipo>
+
+  </section>
+  <div class="modal-overlay"></div>
+</ng-container>
+
+

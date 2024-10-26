@@ -1,0 +1,114 @@
+<div class="contenedor-principal">
+  <header class="cabecera">
+    <div class="contenedor-cabecera">
+      <div class="lg-minhac">
+        <img src="./assets/images/logo-MINHAC.jpg" alt="Logotipo del MInisterio de Hacienda">
+      </div>
+      <div class="titulo-aplicacion">
+        <h1>
+          <span class="titulo-aplicacion-padre">Módulos Auxiliares de NEDAES</span>
+          <img src="../assets/images/cornucopia-header.png" alt="">
+          <span class="titulo-principal">{{ configJson?.appTitulo }}</span>
+        </h1>
+      </div>
+      <div class="etiqueta-usuario">
+        <div>
+          <div>{{ configJson?.usuarioConectado?.nombre }}, {{ configJson?.usuarioConectado?.Apellidos }}</div>
+          <div>{{ configJson?.usuarioConectado?.NIF }} - {{ configJson?.usuarioConectado?.PerfilAutoriza }}</div>          
+        </div>
+      </div>
+    </div>
+  </header>
+
+@if (moduloActual !== "Inicio") {
+  <div class="sub-header">
+    <h2 class="titl-{{iconoModulo}}">
+      <span>{{moduloActual}}</span>
+    </h2>
+    <aside>
+      <nav aria-label="Menú de aplicaciones accesibles">
+<!--  (click)="navegarAModulo('ConsultaNomina')" -->
+        @if (iconoModulo !== "consultas"){  
+        <button type="button" class="btn-consultas" (click)="navegarAModulo('Consultas')">
+          <span>Consulta Nómina</span>
+        </button>
+        }
+        <button type="button" class="btn-certificados" (click)="navegarAModulo('GestionProductividad')">
+          <span>Certificados</span>
+        </button>
+        @if (iconoModulo !== "anticipos"){
+        <button  type="button" class="btn-anticipos" (click)="navegarAModulo('Anticipos')">
+          <span>Anticipos</span>
+        </button>
+        }
+        @if (iconoModulo !== "segsoci"){
+        <button type="button" class="btn-segsoci" (click)="navegarAModulo('SegSocial')">
+          <span>Bajas Seguridad Social</span>
+        </button>
+        }
+        @if (iconoModulo !== "administracion"){
+        <button type="button" class="btn-administracion" (click)="navegarAModulo('Administracion')">
+          <span>Administración</span>
+        </button>
+        }
+      </nav>
+    </aside>
+  </div>
+    <!-- <div>
+      <button type="button" (click)="llamarAController()"> <span>Prueba llamada controller</span>  </button>
+          @if(resultadoApi){
+            <span>{{resultadoApi}}</span>
+          }
+    </div> -->
+    <app-loader></app-loader>
+    <main class="contenido">
+      <router-outlet></router-outlet>
+    </main>
+
+} 
+@else {
+
+  <main class="contenido">
+    <nav aria-label="Menú de aplicaciones" class="botones-inicio">
+      <ul aria-label="Lista de accesos a las aplicaciones">
+        <li>
+          <!-- navegarAModulo('ConsultaNomina') -->
+          <button type="button" class="btn-consultas" (click)="navegarAModulo('Consultas')">
+            <div class="btn-titulo">Consulta Nómina</div>
+            <div class="btn-descrip">Módulo para consultas personalizadas de los datos de NEDAES</div>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="btn-certificados" (click)="navegarAModulo('GestionProductividad')">
+            <div class="btn-titulo">Certificados</div>
+            <div class="btn-descrip">Módulo para obtener certificados de distintos tipos para el personal del Ministerio de Hacienda</div>           
+          </button>
+        </li>
+        <li>
+          <button  type="button" class="btn-anticipos" (click)="navegarAModulo('Anticipos')">
+            <div class="btn-titulo">Anticipos</div>
+            <div class="btn-descrip">Gestiona las solicitudes de anticipos</div> 
+          </button>
+        </li>
+        <li>
+          <button type="button" class="btn-segsoci" (click)="navegarAModulo('SegSocial')">
+            <div class="btn-titulo">Bajas Seguridad Social</div>
+            <div class="btn-descrip">Módulo de gestión de tareas relacionadas con el personal adscrito al régimen de Seguridad Social, tales como bajas médicas o cotizaciones de ayudas de acción social.</div> 
+          </button>
+        </li>
+        <li>
+          <button type="button" class="btn-administracion" (click)="navegarAModulo('Administracion')">
+            <div class="btn-titulo">Administración</div>
+            <div class="btn-descrip">Administra los elementos generales de la aplicación. Puedes gestionar los módulos y submódulos, los usuarios, mensajes y parámetros de la herramienta.</div> 
+          </button>
+        </li>        
+      </ul>
+    </nav>
+  </main>
+  
+}
+
+  <footer class="pie">
+    Ministerio de Hacienda y Función Pública
+  </footer>
+</div>

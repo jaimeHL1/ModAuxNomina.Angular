@@ -1,0 +1,139 @@
+
+<nav class="nav-estados">
+    <ul aria-label="Navegador por estados de los anticipos">
+        <li *ngFor="let estado of estados">
+            <button type="button" (click)="onEstadoChange($event)" id="{{estado.I_ID_ESTADO}}">
+                {{ estado.S_DESCRIPCION }}
+            </button>
+        </li>
+    </ul>
+    <fieldset>
+        <legend class="sr-only">Buscador automático</legend>
+        <div>
+            <label for="searchInput"><strong>Buscar por DNI o Nombre:</strong></label>
+            <input type="text" class="buscar" id="searchInput" placeholder="Buscar..." (input)="onSearch($event)">             
+        </div>
+    </fieldset>
+</nav>
+
+<div class="contenedor-medio">
+
+    <app-filtro-anticipo class="col-filtros" 
+    [verFiltroFechaConcesion]="verFiltroFechaConcesion"
+    [verFiltroFechaSolicitud]="verFiltroFechaSolicitud"
+    (filtroSeleccionadoNomina)="aplicarFiltro($event, filtroSituacion, { mesConcesion: filtroMesConcesion, annoConcesion: filtroAnnoConcesion }, { mesSolicitud: filtroMesSolicitud, annoSolicitud: filtroAnnoSolicitud })" 
+    (filtroSeleccionadoSituacion)="aplicarFiltro(filtroNomina, $event, { mesConcesion: filtroMesConcesion, annoConcesion: filtroAnnoConcesion }, { mesSolicitud: filtroMesSolicitud, annoSolicitud: filtroAnnoSolicitud })"
+    (filtroFechaConcesion)="aplicarFiltro(filtroNomina, filtroSituacion, $event, { mesSolicitud: filtroMesSolicitud, annoSolicitud: filtroAnnoSolicitud })"
+    (filtroFechaSolicitud)="aplicarFiltro(filtroNomina, filtroSituacion, { mesConcesion: filtroMesConcesion, annoConcesion: filtroAnnoConcesion }, $event)">
+   
+    </app-filtro-anticipo>
+
+    <section *ngIf="anticipos && anticipos.length > 0; else noData" class="col-resultados">
+        <header>
+            <div>Se han encontarado: <strong>{{ anticiposFiltrados.length }}</strong> resultados</div>
+            <div *ngIf="idEstadoSeleccionado === 0"> <!-- Nuevos -->
+                <button (click)="mostrarNuevoAnticipo()" type="button">
+                    <span><i class="fas fa-plus-circle"></i> Nuevo Anticipo</span>
+                </button> 
+                <button (click)="mostrarNuevoAnticipo()" type="button">
+                    <span><i class="fas fa-file-alt"></i> Propuesta</span>
+                </button>
+                <button (click)="mostrarNuevoAnticipo()" type="button">
+                    <span><i class="fas fa-certificate"></i> Certificado</span>
+                </button>
+                <button (click)="mostrarNuevoAnticipo()" type="button">
+                    <span><i class="fas fa-paper-plane"></i> NEDAES</span>
+                </button>                
+            </div>
+            <div *ngIf="idEstadoSeleccionado === 3 "> <!--  Concesion -->
+                <button (click)="concesionAnticipos()" type="button">
+                    <span><i class="fas fa-coins"></i> Concesión Anticipos</span>
+                </button> 
+                <button (click)="infRetEspecie()" type="button">
+                    <span><i class="fas fa-certificate"></i> Inf. Ret. en Especie</span>
+                </button>
+            </div>
+            <div *ngIf="idEstadoSeleccionado === 5 "> <!--  En Amortización -->
+                <button (click)="altaPorTraslado()" type="button">
+                    <span><i class="fas fa-plus-circle"></i> Alta Anticipo por Traslado</span>
+                </button>  
+            </div>
+        </header>
+        <ul aria-label="Lista de resultados" class="lista-resultados">
+            <li *ngFor="let anticipo of anticiposFiltrados" >
+                <div class="datos-resultado">
+                    <div class="nombre-id">
+                        <!-- <div role="region" aria-label="ID del anticipo">
+                            <strong>{{anticipo.idAnticipo}}</strong>
+                        </div> -->
+                        <div role="region" aria-label="Número de documento de identificación y nombre completo">
+                            <strong aria-label="NIF">{{ anticipo.dni}}</strong> - {{ anticipo.apellidosNombre}}
+                        </div>
+                        <div role="region" aria-label="Clase de nómina y número de pagas">
+                            <!-- <i class="fas fa-coins" title="Pagas"></i>  -->
+                            {{ anticipo.descripcionClaseNomina }}: {{ anticipo.numPagasSolicitadas}} Pagas
+                        </div>
+                    </div>
+                    <div class="solicitado" role="region" aria-label="Fecha de solicitud">
+                        <div class="ic-title">Solicitado</div>
+                        <div><strong>{{ anticipo.fechaAlta}}</strong></div>                        
+                    </div>
+                    <div class="certificado" role="region" aria-label="Fecha de certificación">
+                        <div class="ic-title">Certificado</div>
+                        <div><strong>
+                            @if(!anticipo.fechaCertificacion) {
+                                --
+                            } @else {
+                                {{ anticipo.fechaCertificacion}}
+                            }
+                            
+                        </strong></div>                        
+                    </div>
+                    <div class="concedido" role="region" aria-label="Fecha de concesión">
+                        <div class="ic-title">Concedido</div>
+                        <div><strong>
+                            @if(!anticipo.fechaConcesion) {
+                                --
+                            } @else {
+                                {{ anticipo.fechaConcesion}}
+                            }
+                        </strong></div>
+                    </div>
+                    <div class="amortizado-detalle-acciones" role="region" aria-label="Cantidad amortizada y acciones">
+                        <div class="estado">
+                            <!-- {{ anticipo.idEstado}} -->
+                            <div><i class="fas fa-compass" aria-hidden="true"></i> Estado:</div>
+                            <div>{{ anticipo.descripcionEstado}}</div>
+                        </div>
+                        <div class="amortizado">
+                           <div>Anticipo: {{ anticipo.importeTotal}}€ / Amortizado: {{ anticipo.importeAmortizado}}€</div>
+                           <!-- <div></div> -->
+                           <progress value="{{ anticipo.importeAmortizado}}" max="{{ anticipo.importeTotal}}"></progress>
+                        </div>
+                        <div class="acciones">
+                            <button type="button" (click)="detalleAnticipo(anticipo)" title="Ver Detalle">
+                               <i class="fas fa-eye" aria-hidden="true"></i>
+                            </button>                         
+                            <button type="button" (click)="borrarAnticipo(anticipo)" title="Eliminar">
+                                <i class="fas fa-trash-alt" aria-hidden="true"></i>   
+                            </button>
+                        </div>                        
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section> 
+    <ng-template #noData>
+        <p>No hay anticipos disponibles</p>
+    </ng-template>
+</div>
+
+<ng-container *ngIf="verDetalleAnticipo && anticipoSeleccionado">
+    <app-detalle-anticipo [anticipo]="anticipoSeleccionado" [amortizaciones]="amortizaciones"></app-detalle-anticipo>    
+</ng-container>
+
+<ng-container *ngIf="mostrarFormularioNuevoAnticipo">
+    <app-nuevo-anticipo></app-nuevo-anticipo>
+</ng-container>
+
+

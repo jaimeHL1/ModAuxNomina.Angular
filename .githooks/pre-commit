@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Obtiene el nombre de la rama actual
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Verifica si la rama actual es 'develop' o 'main'
+if [ "$current_branch" = "develop" ] || [ "$current_branch" = "main" ]; then
+    # Si la rama es 'develop' o 'main', no se ejecutan acciones y se muestra un mensaje
+    echo "No se permite hacer commit en develop o main. Recuerda que tienes que crear una rama propia para desarrollar."
+    echo "Sigue las instrucciones de CambiosEnRamaEquivocada.md"
+    exit 1 # Se aborta el commit
+fi

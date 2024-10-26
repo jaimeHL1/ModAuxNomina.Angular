@@ -1,0 +1,60 @@
+<div *ngIf="anticipo">
+    <p>> Datos del empleado extraidos de Tablas básicas de Nedaes:</p>
+    <p>Sueldo: {{ anticipo.sueldo }}</p>
+    <p>Trienios: {{ anticipo.trienios }}</p>
+    <p>1/6 Paga Extra: {{ anticipo.pagaExtra }}</p>
+    <p>IRPF: {{ anticipo.irpf }}</p>
+
+    <p>> Datos del Anticipo:</p>
+    <p> Nº de pagas solicitadas: {{ anticipo.numPagasSolicitadas }}</p>
+    <p>Nº de cuotas a devolver: {{ anticipo.numMesesDevolucion }}</p>
+
+    <p>> Cálculo:</p>
+    <p>
+        1. Se suman los conceptos(*):
+        {{ anticipo.sueldo | number:'1.2-2' }}
+        + {{ anticipo.trienios | number:'1.2-2' }}
+        + {{ anticipo.pagaExtra | number:'1.2-2' }}
+        = {{ sumaConceptos | number:'1.2-2' }}
+    </p>
+
+    <!-- Paso 2: Aplicar el IRPF -->
+    <p>
+        2. Se aplica el IRPF:
+        {{ sumaConceptos | number:'1.2-2' }}
+        - {{ anticipo.irpf?.toFixed(2) || 0 }}%
+        = {{ irpfAplicado | number:'1.2-2' }}
+    </p>
+
+    <!-- Paso 3: Multiplicar por el número de pagas -->
+    <p>
+        3. Se multiplica por el nº de pagas:
+        {{ irpfAplicado | number:'1.2-2' }}
+        * {{ anticipo.numPagasSolicitadas || 0 }}
+        = {{ multiplicadoPorPagas | number:'1.2-2' }}
+    </p>
+
+    <!-- Paso 4: Dividir entre el número de cuotas -->
+    <p>
+        4. Se divide entre el nº de cuotas:
+        {{ multiplicadoPorPagas | number:'1.2-2' }}
+        / {{ anticipo.numMesesDevolucion || 0 }}
+        = {{ divididoEntreCuotas | number:'1.2-2' }}
+    </p>
+
+    <!-- Paso 5: Redondeo al entero superior -->
+    <p>
+        5. Se redondea al entero superior:
+        {{ redondeadoSuperior }}
+    </p>
+
+    <!-- Paso 6: Se multiplica por el nº de cuotas -->
+    <p>
+        6. Se multiplica por el nº de cuotas:
+        {{ redondeadoSuperior }} * {{ anticipo.numMesesDevolucion || 0 }} = {{ multiplicadoPorNumCuotas }}
+    </p>
+
+    <p>Total anticipo concedido: {{ multiplicadoPorNumCuotas }}€</p> 
+
+    (*) Sueldo, Trienios, Paga Extra
+</div>
